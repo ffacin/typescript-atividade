@@ -1,0 +1,31 @@
+// schema.prisma
+
+// Definição do modelo de Usuário
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  login     String   @unique
+  password  String
+  cards     Card[]
+}
+
+// Definição do modelo de Cartão de Crédito
+model Card {
+  id             Int      @id @default(autoincrement())
+  number         String   @unique
+  ownerName      String
+  expirationDate String
+  securityCode   String
+  userId         Int
+  user           User     @relation(fields: [userId], references: [id])
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
